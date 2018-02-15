@@ -2,7 +2,9 @@ package com.kamilglonek.farmmanager;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,17 +13,17 @@ import android.view.MenuItem;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-public class UserActivity extends AppCompatActivity {
+import com.parse.ParseUser;
+
+public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FloatingActionButton addButton, fab1, fab2;
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
 
-    //// drawer
-
+    //// drawer, side navigation bar
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
-
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -50,7 +52,12 @@ public class UserActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
+        navigationView.setNavigationItemSelectedListener(this);
+
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,5 +85,27 @@ public class UserActivity extends AppCompatActivity {
                 fab2.setClickable(true);
                 isOpen=true;
             }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        if(id == R.id.nav_account){
+
+        }
+        else if(id == R.id.nav_settings){
+
+        }
+        else if (id == R.id.nav_logout){
+            ParseUser.getCurrentUser().logOut();
+            setContentView(R.layout.activity_login);
+        }
+        return false;
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }
