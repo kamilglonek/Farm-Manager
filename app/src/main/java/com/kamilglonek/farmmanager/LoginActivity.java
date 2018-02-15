@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                             Intent userIntent = new Intent(LoginActivity.this, UserActivity.class);
                                             LoginActivity.this.startActivity(userIntent);
-                                            setContentView(R.layout.activity_user);
 
                                     } else {
                                         Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/nav_account"
+    <item
+        android:id="@+id/nav_settings"
+        android:title="Settings"
+        android:icon="@mipmap/ic_settings_black_24dp"/>
+
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@mipmap/ic_person_black_24dp"
         android:title="My account" />
-
-    <item android:id="@+id/nav_settings"
-        android:title="Settings" />
-
     <item android:id="@+id/nav_logout"
-        android:title="Log Out" />
+        android:title="Log Out"
+        android:icon="@mipmap/ic_arrow_back_black_24dp"/>
 
 </menu>
