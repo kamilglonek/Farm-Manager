@@ -1,6 +1,7 @@
 package com.kamilglonek.farmmanager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,10 +11,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,7 +37,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-        addButton = (FloatingActionButton) findViewById(R.id.bAddFarm);
+        ///// floating action button
+
+        addButton = (FloatingActionButton) findViewById(R.id.addButton);
         fab1 = (FloatingActionButton) findViewById(R.id.fab1);
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
 
@@ -46,18 +54,40 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         mDrawerLayout.addDrawerListener(mToggle);
         mToggle.syncState();
 
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                animateFab();
+            }
+        });
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString()+"' farm", ParseQuery.getQuery("animalType").toString());
+
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+        //////  side navigation bar
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // method invoked only when the actionBar is not null.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,11 +125,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         }
         else if(id == R.id.nav_settings){
-
+            //addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString()+"' farm", ParseQuery.getQuery("animalType").toString());
+            //addFarm("Test owner", "Test", "Test");
         }
         else if (id == R.id.nav_logout){
             ParseUser.getCurrentUser().logOut();
-            setContentView(R.layout.activity_login);
+            Intent loginIntent = new Intent(UserActivity.this, LoginActivity.class);
+            UserActivity.this.startActivity(loginIntent);
         }
         return false;
     }
@@ -108,4 +140,23 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+
+    //////////////////////////////////// add farm
+
+    public void addFarm(String farmOwner, String farmName, String animalType) {
+
+        JSONObject farm = new JSONObject();
+        try{
+            farm.put("farmOwner", farmOwner).put("farmName", farmName).put("animalType", animalType);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ParseObject parseFarm = new ParseObject("Farm");
+        parseFarm.put("Farm", farm);
+
+    }
+
 }

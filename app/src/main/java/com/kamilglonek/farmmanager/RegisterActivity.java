@@ -1,5 +1,6 @@
 package com.kamilglonek.farmmanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                             if (e == null) {
                                 Log.i("Sign Up", "Successful");
-                                setContentView(R.layout.activity_login);
+                                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                RegisterActivity.this.startActivity(loginIntent);
 
                             } else {
                                 Log.i("Sign Up", "Failed");
