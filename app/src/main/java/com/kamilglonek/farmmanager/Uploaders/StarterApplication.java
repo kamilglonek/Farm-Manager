@@ -1,4 +1,4 @@
-package com.kamilglonek.farmmanager;
+package com.kamilglonek.farmmanager.Uploaders;
 
 import android.app.Application;
 

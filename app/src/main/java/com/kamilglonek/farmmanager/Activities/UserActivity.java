@@ -1,4 +1,4 @@
-package com.kamilglonek.farmmanager;
+package com.kamilglonek.farmmanager.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -6,16 +6,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.kamilglonek.farmmanager.R;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -30,6 +39,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     //// drawer, side navigation bar
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
+
+    //// tabbed activity
+    private String [] tabs = {"Sow", "Litter", "Callendar", "Injections", "Recepies"};
+    private ViewPager mViewPager;
+    private SectionPagerAdapter mSectionsPagerAdapter;
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -64,7 +78,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString()+"' farm", ParseQuery.getQuery("animalType").toString());
+                addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString()+"' farm", ParseQuery.getQuery("animalType").toString());
 
             }
         });
@@ -87,6 +101,15 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nvView);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        //// tabbed activity
+        // initialization with section adapter
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -156,7 +179,83 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         ParseObject parseFarm = new ParseObject("Farm");
         parseFarm.put("Farm", farm);
+        parseFarm.saveInBackground();
 
+    }
+
+
+
+    ///// fragments
+    // a placeholder fragment containind a simple view
+
+    public static class PlaceholderFragment extends Fragment {
+
+        // fragment arg representing the section for this fragment
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public PlaceholderFragment() {
+
+        }
+
+        // returns new instance of this fragmenta for the given section number
+        public static PlaceholderFragment newInstance(int sectionnumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            return fragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+                return inflater.inflate(R.layout.fragment_tab1, container, false);// this is root view
+            } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
+                return inflater.inflate(R.layout.fragment_tab2, container, false);
+            } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+                return inflater.inflate(R.layout.fragment_tab3, container, false);
+            } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 4) {
+                return inflater.inflate(R.layout.fragment_tab4, container, false);
+            } else if (getArguments().getInt(ARG_SECTION_NUMBER) == 5) {
+                return inflater.inflate(R.layout.fragment_tab5, container, false);
+            } else return null;
+
+        }
+
+    }
+
+    /////////// fragemts, tabs
+
+    public class SectionPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionPagerAdapter (FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return PlaceholderFragment.newInstance(position + 1);
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
+        }
+
+        @Override
+        public CharSequence getPageTitle (int position) {
+            switch (position) {
+                case 0:
+                    return "Sow";
+                case 1:
+                    return "Litter";
+                case 2:
+                    return "Callendar";
+                case 3:
+                    return "Injections";
+                case 5:
+                    return "Recepies";
+            }
+            return null;
+        }
     }
 
 }

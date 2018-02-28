@@ -1,10 +1,11 @@
-package com.kamilglonek.farmmanager;
+package com.kamilglonek.farmmanager.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.kamilglonek.farmmanager.R;
 import com.parse.ParseAnalytics;
 
 public class WelcomeScreen extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.kamilglonek.farmmanager;
+package com.kamilglonek.farmmanager.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kamilglonek.farmmanager.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
