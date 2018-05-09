@@ -6,7 +6,6 @@
         android:id="@+id/nav_settings"
         android:title="Settings"
         android:icon="@mipmap/ic_settings_black_24dp"/>
-
     <item
         android:id="@+id/nav_account"
         android:icon="@mipmap/ic_person_black_24dp"
@@ -14,5 +13,8 @@
     <item android:id="@+id/nav_logout"
         android:title="Log Out"
         android:icon="@mipmap/ic_arrow_back_black_24dp"/>
+    <item android:id="@+id/nav_personal_list"
+        android:title="To do list"
+        android:icon="@mipmap/ic_format_list_bulleted_black_24dp"/>
 
 </menu>

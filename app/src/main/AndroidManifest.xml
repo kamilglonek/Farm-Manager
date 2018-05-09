@@ -25,6 +25,7 @@
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.UserActivity" />
+        <activity android:name=".Activities.PersonalList"></activity>
     </application>
 
 </manifest>

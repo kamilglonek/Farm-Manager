@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_sow"
+        android:icon="@drawable/ic_add_alarm"
+        android:title="@string/title_sow" />
+
+    <item
+        android:id="@+id/navigation_litter"
+        android:icon="@drawable/ic_add_alarm"
+        android:title="@string/title_litter" />
+
+    <item
+        android:id="@+id/navigation_to_do"
+        android:icon="@drawable/ic_add_alarm"
+        android:title="@string/title_to_do" />
+
+</menu>

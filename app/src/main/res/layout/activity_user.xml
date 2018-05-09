@@ -14,70 +14,53 @@
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+            android:paddingTop="@dimen/appbar_padding_top">
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="scrollable">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TabItem
-                    android:id="@+id/tab1"
+                    android:id="@+id/tabItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sow" />
+                    android:text="@string/title_sow" />
 
                 <android.support.design.widget.TabItem
-                    android:id="@+id/tab2"
+                    android:id="@+id/tabItem2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Litter" />
+                    android:text="@string/title_litter" />
 
                 <android.support.design.widget.TabItem
-                    android:id="@+id/tab3"
+                    android:id="@+id/tabItem3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Callendar" />
+                    android:text="@string/title_to_do" />
 
                 <android.support.design.widget.TabItem
-                    android:id="@+id/tab4"
+                    android:id="@+id/tabItem4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Injections" />
+                    android:text="@string/title_callendar" />
 
                 <android.support.design.widget.TabItem
-                    android:id="@+id/tab5"
+                    android:id="@+id/tabItem5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Recepies" />
+                    android:text="@string/title_recepies" />
+
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/container"
-            android:layout_width="match_parent"
-            android:layout_height="463dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
-
-            <android.support.constraint.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="com.kamilglonek.farmmanager.Activities.UserActivity">
-
-            </android.support.constraint.ConstraintLayout>
-
-        </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addButton"
