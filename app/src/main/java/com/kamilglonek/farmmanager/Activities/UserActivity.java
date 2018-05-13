@@ -198,19 +198,19 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new Tab1();
+                    fragment = Tab1.newInstance("Sow", "1");
                     break;
                 case 1:
-                    fragment = new Tab2();
+                    fragment = Tab2.newInstance("Litter", "2");
                     break;
                 case 2:
-                    fragment = new Tab3();
+                    fragment = Tab3.newInstance("To do", "3");
                     break;
                 case 3:
-                    fragment = new Tab4();
+                    fragment = Tab4.newInstance("Callendar", "4");
                     break;
                 case 4:
-                    fragment = new Tab5();
+                    fragment = Tab5.newInstance("Recepies", "5");
                     break;
                 default:
                     return null;

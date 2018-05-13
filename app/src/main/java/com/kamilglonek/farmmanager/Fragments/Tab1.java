@@ -1,8 +1,7 @@
 package com.kamilglonek.farmmanager.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kamilglonek.farmmanager.R;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 
 /**
@@ -22,12 +26,54 @@ import com.kamilglonek.farmmanager.R;
  */
 public class Tab1 extends Fragment {
 
+    public String title;
+    public String tabID;
+    TextView message;
+    String aa;
+    public Tab1() {
+        // Empty constructor required
+    }
+
+    // TODO: Rename and change types and number of parameters
+    public static Fragment newInstance(String title, String tabID) {
+        Fragment fragment = new Tab1();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("tabID", tabID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_tab1, container, false);
+        message = (TextView) view.findViewById(R.id.tv1);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab1, container, false);
+        return view;
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        aa = ParseUser.getCurrentUser().get("animalType").toString();
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("animalType");
+        query.getInBackground("716e6ad", new GetCallback<ParseObject>() {
+            public void done(ParseObject object, ParseException e) {
+                if (e == null) {
+                    //aa = query.toString();
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+        message.setText(aa);
+    }
+
+
+
+
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -54,15 +100,6 @@ public class Tab1 extends Fragment {
 //     * @param tabID Parameter 2.
 //     * @return A new instance of fragment Tab1.
 //     */
-    // TODO: Rename and change types and number of parameters
-    public static Fragment newInstance(String title, int tabID) {
-        Fragment fragment = new Tab1();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        args.putInt("tabID", tabID);
-        fragment.setArguments(args);
-        return fragment;
-    }
 //
 //    @Override
 //    public void onCreate(Bundle savedInstanceState) {

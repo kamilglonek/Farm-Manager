@@ -1,6 +1,7 @@
 package com.kamilglonek.farmmanager.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.kamilglonek.farmmanager.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -31,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         final TextView registerLink = (TextView) findViewById(R.id.tvRegisterHere);
         final CheckBox cbRememberPrefs = (CheckBox) findViewById(R.id.cbRememberPrefs);
 
+        ArrayList<String> loginData = new ArrayList<>();
         registerLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +66,11 @@ public class LoginActivity extends AppCompatActivity {
                                     if (e == null) {
                                         Log.i("Signup", "Login successful");
 
-
+                                        if(cbRememberPrefs.isChecked()) {
+                                            loginData.add(username);
+                                            loginData.add(password);
+                                            saveData(loginData);
+                                        }
 
                                             Intent userIntent = new Intent(LoginActivity.this, UserActivity.class);
                                             LoginActivity.this.startActivity(userIntent);
@@ -74,5 +83,14 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         });
+    }
+
+    public void saveData(ArrayList<String> loginData) {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(loginData);
+        editor.putString("passes", json);
+        editor.apply();
     }
 }

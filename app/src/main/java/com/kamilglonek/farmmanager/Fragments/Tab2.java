@@ -22,11 +22,30 @@ import com.kamilglonek.farmmanager.R;
  */
 public class Tab2 extends Fragment {
 
+    public String title;
+    public String tabID;
+
+    public Tab2() {
+        // Empty constructor required
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_tab2, container, false);
+        TextView message = (TextView) view.findViewById(R.id.tv2);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab2, container, false);
+        return view;
+    }
+
+    // TODO: Rename and change types and number of parameters
+    public static Fragment newInstance(String title, String tabID) {
+        Fragment fragment = new Tab2();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("tabID", tabID);
+        fragment.setArguments(args);
+        return fragment;
     }
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

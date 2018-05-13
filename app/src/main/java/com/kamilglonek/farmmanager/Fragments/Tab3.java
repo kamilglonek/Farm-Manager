@@ -3,6 +3,7 @@ package com.kamilglonek.farmmanager.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +22,36 @@ import com.kamilglonek.farmmanager.R;
  * create an instance of this fragment.
  */
 public class Tab3 extends Fragment {
+
+    public String title;
+    public String tabID;
+    TextView message;
+
+    public Tab3() {
+        // Empty constructor required
+    }
+
+    // TODO: Rename and change types and number of parameters
+    public static Fragment newInstance(String title, String tabID) {
+        Fragment fragment = new Tab3();
+        Bundle args = new Bundle();
+        args.putString("title", title);
+        args.putString("tabID", tabID);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab3, container, false);
+        View view = inflater.inflate(R.layout.fragment_tab3, container, false);  // Inflate the layout for this fragment
+        message = (TextView) view.findViewById(R.id.tv3);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
     }
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

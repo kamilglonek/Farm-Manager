@@ -14,13 +14,15 @@ import android.widget.TextView;
 
 import com.kamilglonek.farmmanager.R;
 import com.kamilglonek.farmmanager.Structures.ListItem;
+import com.parse.ParseObject;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
 public class PersonalList extends AppCompatActivity {
 
     ListView personalList;
-    //private ArrayAdapter<String> adapter;
     FloatingActionButton addTaskButton;
     Button bAddTask;
     ArrayList<ListItem> list = new ArrayList<>();
@@ -38,6 +40,11 @@ public class PersonalList extends AppCompatActivity {
 
         MyListAdapter listAdapter = new MyListAdapter();
         personalList.setAdapter(listAdapter);
+
+
+        // JSONArray
+        JSONArray jList = new JSONArray();
+        ParseObject pObject = new ParseObject("List");
 
         addTaskButton = (FloatingActionButton) findViewById(R.id.addTaskButton);
         addTaskButton.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +64,11 @@ public class PersonalList extends AppCompatActivity {
                     public void onClick(View v) {
                         if (etTaskName != null && etDayNumber != null) {
                             ListItem newListItem = new ListItem(etTaskName.getText().toString(), etDayNumber.getText().toString());
-                            list.add(newListItem);
+                            //list.add(newListItem);
+
+                            jList.put(newListItem);
+                            pObject.put("jList", jList);
+                            pObject.saveInBackground();
                         }
                         dialog.dismiss();
                     }
@@ -65,6 +76,23 @@ public class PersonalList extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void addListItem() {
+//        ParseObject parsePersonalList = new ParseObject("Personal list");
+//        Gson gson = new Gson();
+//        JSONObject
+//        parsePersonalList.put("", farm);
+//        parseFarm.saveInBackground();
+    }
+
+    public ParseObject createListItem (String name, String dayNumber) {
+
+        ParseObject listItem = new ParseObject("ListItem");
+        listItem.put("name", name);
+        listItem.put("dayNumber", dayNumber);
+
+        return listItem;
     }
 
     class MyListAdapter extends BaseAdapter {
