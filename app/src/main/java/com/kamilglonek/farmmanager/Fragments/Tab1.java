@@ -6,14 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.ListView;
 
+import com.kamilglonek.farmmanager.Modules.Sow;
 import com.kamilglonek.farmmanager.R;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
+
+import java.util.ArrayList;
 
 
 /**
@@ -28,8 +28,10 @@ public class Tab1 extends Fragment {
 
     public String title;
     public String tabID;
-    TextView message;
-    String aa;
+    ArrayList<Sow> sows = new ArrayList<>();
+    ListView sowList;
+
+
     public Tab1() {
         // Empty constructor required
     }
@@ -45,30 +47,32 @@ public class Tab1 extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
-        message = (TextView) view.findViewById(R.id.tv1);
+        sowList = (ListView) view.findViewById(R.id.sowList);
+
         // Inflate the layout for this fragment
         return view;
     }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        aa = ParseUser.getCurrentUser().get("animalType").toString();
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("animalType");
-        query.getInBackground("716e6ad", new GetCallback<ParseObject>() {
-            public void done(ParseObject object, ParseException e) {
-                if (e == null) {
-                    //aa = query.toString();
-                } else {
-                    // something went wrong
-                }
-            }
-        });
-        message.setText(aa);
+        sows.add(new Sow(1,1));
+        sows.add(new Sow(2,2));
+
+        MySowListAdapter mySowListAdapter = new MySowListAdapter();
+        sowList.setAdapter(mySowListAdapter);
     }
 
 
@@ -158,4 +162,34 @@ public class Tab1 extends Fragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+    class MySowListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return sows.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = getLayoutInflater().inflate(R.layout.sow_listview, null);
+            TextView animalID = (TextView) convertView.findViewById(R.id.tvSowID);
+            TextView sowID = (TextView) convertView.findViewById(R.id.tvAnimalID);
+
+
+            animalID.setText("Mother Nr: "+sows.get(position).sowID);
+            sowID.setText("Animal ID: "+sows.get(position).animalID);
+            return convertView;
+        }
+    }
 }

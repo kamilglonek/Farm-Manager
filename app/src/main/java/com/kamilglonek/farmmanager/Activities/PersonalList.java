@@ -12,11 +12,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.kamilglonek.farmmanager.Downloaders.PersonalListDownloader;
 import com.kamilglonek.farmmanager.R;
 import com.kamilglonek.farmmanager.Structures.ListItem;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -35,18 +42,33 @@ public class PersonalList extends AppCompatActivity {
 
         personalList = (ListView) findViewById(R.id.personalList);
 
-        list.add(new ListItem("zastrzyk", "3"));
-        list.add(new ListItem("miszenie", "34"));
+        ///// PersonalListDownloader
+        PersonalListDownloader personalListDownloader = new PersonalListDownloader();
+        String objectID = null;
+        Boolean isListCreated = false;
+        try {
+            ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("personalList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+            objectID = objectIDQuery.getFirst().getObjectId().toString();
+            isListCreated = true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+        if (objectID == null){
+
+        } else {
+            try {
+                list = personalListDownloader.loadList(objectID);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         MyListAdapter listAdapter = new MyListAdapter();
         personalList.setAdapter(listAdapter);
 
-
-        // JSONArray
-        JSONArray jList = new JSONArray();
-        ParseObject pObject = new ParseObject("List");
-
+        // adding task to list with add task dialog
         addTaskButton = (FloatingActionButton) findViewById(R.id.addTaskButton);
+        Boolean finalIsListCreated = isListCreated;
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,17 +86,61 @@ public class PersonalList extends AppCompatActivity {
                     public void onClick(View v) {
                         if (etTaskName != null && etDayNumber != null) {
                             ListItem newListItem = new ListItem(etTaskName.getText().toString(), etDayNumber.getText().toString());
-                            //list.add(newListItem);
+                            list.add(newListItem);
+                            listAdapter.notifyDataSetChanged();
+                            if(!finalIsListCreated){
+                                uploadListFirstTime();
+                            }
+                            else {
+                                try {
+                                    uploadList();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                            jList.put(newListItem);
-                            pObject.put("jList", jList);
-                            pObject.saveInBackground();
+//                            jList.put(newListItem);
+//                            pObject.put("jList", jList);
+//                            pObject.saveInBackground();
                         }
                         dialog.dismiss();
                     }
                 });
             }
         });
+
+    }
+
+    public ArrayList<ListItem> loadList() throws ParseException, JSONException {
+        ParseQuery personalList = new ParseQuery("personalList");
+        ParseObject object = personalList.get("EWUDvPLj2R");
+        String jsonList = object.get("list").toString();
+        JSONArray array = new JSONArray(jsonList);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = array.getJSONObject(i);
+            list.add(new ListItem(obj.get("dayNumber").toString(), obj.get("taskName").toString()));
+        }
+        return list;
+    }
+
+    public void uploadListFirstTime() {
+        ParseObject parseObject = new ParseObject("personalList");
+        parseObject.put("owner", ParseUser.getCurrentUser().getUsername().toString());
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        parseObject.put("list", json);
+        parseObject.saveInBackground();
+    }
+
+    public void uploadList() throws ParseException {
+        String objectID;
+        ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("personalList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+        objectID = objectIDQuery.getFirst().getObjectId().toString();
+        ParseObject parseObject = objectIDQuery.get(objectID);
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        parseObject.put("list", json);
+        parseObject.saveInBackground();
 
     }
 
@@ -86,14 +152,14 @@ public class PersonalList extends AppCompatActivity {
 //        parseFarm.saveInBackground();
     }
 
-    public ParseObject createListItem (String name, String dayNumber) {
-
-        ParseObject listItem = new ParseObject("ListItem");
-        listItem.put("name", name);
-        listItem.put("dayNumber", dayNumber);
-
-        return listItem;
-    }
+//    public ParseObject createListItem (String name, String dayNumber) {
+//
+//        ParseObject listItem = new ParseObject("ListItem");
+//        listItem.put("name", name);
+//        listItem.put("dayNumber", dayNumber);
+//
+//        return listItem;
+//    }
 
     class MyListAdapter extends BaseAdapter {
 
