@@ -1,15 +1,21 @@
 package com.kamilglonek.farmmanager.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.kamilglonek.farmmanager.Modules.Litter;
+import com.kamilglonek.farmmanager.Modules.Sow;
 import com.kamilglonek.farmmanager.R;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -24,6 +30,8 @@ public class Tab2 extends Fragment {
 
     public String title;
     public String tabID;
+    ArrayList<Litter> litters = new ArrayList<Litter>();
+    ListView litterList;
 
     public Tab2() {
         // Empty constructor required
@@ -33,7 +41,7 @@ public class Tab2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
-        TextView message = (TextView) view.findViewById(R.id.tv2);
+        litterList = (ListView) view.findViewById(R.id.litterList);
         // Inflate the layout for this fragment
         return view;
     }
@@ -46,6 +54,18 @@ public class Tab2 extends Fragment {
         args.putString("tabID", tabID);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        Date date = new Date();
+
+        litters.add(new Litter(1,1,date,10));
+
+        Tab2.MyLitterListAdapter myLitterListAdapter = new Tab2.MyLitterListAdapter();
+        litterList.setAdapter(myLitterListAdapter);
     }
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -140,4 +160,34 @@ public class Tab2 extends Fragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+    class MyLitterListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return litters.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            convertView = getLayoutInflater().inflate(R.layout.litter_listview, null);
+            TextView animalID = (TextView) convertView.findViewById(R.id.tvSowID_2);
+            TextView sowID = (TextView) convertView.findViewById(R.id.tvAnimalAmount);
+
+
+            animalID.setText("Litter after Mother nr:");
+            sowID.setText("Amount");
+            return convertView;
+        }
+    }
 }

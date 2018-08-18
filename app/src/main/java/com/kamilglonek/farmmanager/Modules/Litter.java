@@ -8,14 +8,15 @@ import java.util.Date;
 
 public class Litter extends Animal {
 
+    public int parentID;
     public int amount;
     public Date birthdate;
-    public int parentID;
-    public Litter(int animalID, Date birthdatte, int amount, int sowID) {
+
+    public Litter(int animalID, int sowID, Date birthdate, int amount) {
         super(animalID);
 
-        this.amount = amount;
-        this.birthdate = birthdatte;
         this.parentID = sowID;
+        this.amount = amount;
+        this.birthdate = birthdate;
     }
 }

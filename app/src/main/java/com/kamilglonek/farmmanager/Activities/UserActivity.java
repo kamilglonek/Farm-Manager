@@ -13,11 +13,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.kamilglonek.farmmanager.Fragments.Tab1;
 import com.kamilglonek.farmmanager.Fragments.Tab2;
@@ -26,7 +29,6 @@ import com.kamilglonek.farmmanager.Fragments.Tab4;
 import com.kamilglonek.farmmanager.Fragments.Tab5;
 import com.kamilglonek.farmmanager.R;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import org.json.JSONException;
@@ -37,6 +39,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     FloatingActionButton addButton, fab1, fab2;
     Animation fabOpen, fabClose, rotateForward, rotateBackward;
     boolean isOpen = false;
+    Button bAddFab1;
+    int tabID = 0;
 
     //// drawer, side navigation bar
     private DrawerLayout mDrawerLayout;
@@ -76,22 +80,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString() + "' farm", ParseQuery.getQuery("animalType").toString());
-
-            }
-        });
-
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-
         //////  side navigation bar
 
         ActionBar actionBar = getSupportActionBar();
@@ -113,7 +101,64 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabID = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString() + "' farm", ParseQuery.getQuery("animalType").toString());
+
+                switch(tabID) {
+                    case 0:
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(UserActivity.this);
+                        View mView = getLayoutInflater().inflate(R.layout.dialog_add_sow, null);
+                        final EditText etTaskName = (EditText) mView.findViewById(R.id.etTaskName);
+                        final EditText etDayNumber = (EditText) mView.findViewById(R.id.etDayNumber);
+                        bAddFab1 = (Button) mView.findViewById(R.id.bAddTask);
+                        mBuilder.setView(mView);
+                        final AlertDialog dialog = mBuilder.create();
+                        dialog.show();
+                        break;
+                    case 1:
+                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(UserActivity.this);
+                        View mView2 = getLayoutInflater().inflate(R.layout.dialog_add_litter, null);
+                        final EditText etSowID = (EditText) mView2.findViewById(R.id.etSowID);
+                        final EditText etamount = (EditText) mView2.findViewById(R.id.etAmount);
+                        bAddFab1 = (Button) mView2.findViewById(R.id.bAddTask);
+                        mBuilder2.setView(mView2);
+                        final AlertDialog dialog2 = mBuilder2.create();
+                        dialog2.show();
+                        break;
+                }
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -146,15 +191,20 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         int id = item.getItemId();
         if (id == R.id.nav_account) {
+            //drawer layout my account
 
         } else if (id == R.id.nav_settings) {
-            //addFarm(ParseUser.getCurrentUser().toString(), ParseUser.getCurrentUser().toString()+"' farm", ParseQuery.getQuery("animalType").toString());
-            //addFarm("Test owner", "Test", "Test");
+            //drawer layout settings
+
         } else if (id == R.id.nav_logout) {
+            //drawer layout logout
+
             ParseUser.getCurrentUser().logOut();
             Intent loginIntent = new Intent(UserActivity.this, LoginActivity.class);
             UserActivity.this.startActivity(loginIntent);
         } else if (id == R.id.nav_personal_list) {
+            //drawr layout personalList, if you want to customize your list of things to do
+
             Intent listIntent = new Intent(UserActivity.this, PersonalList.class);
             UserActivity.this.startActivity(listIntent);
         }
@@ -187,7 +237,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         private static String TAB_3_TITLE = "Callendar";
         private static String TAB_4_TITLE = "Injections";
         private static String TAB_5_TITLE = "Recepies";
-
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

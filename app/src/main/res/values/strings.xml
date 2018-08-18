@@ -24,5 +24,14 @@
     <string name="day_number">Day number</string>
     <string name="button_add_task">Add task</string>
 
+    <string name="add_sow">Add new sow</string>
+    <string name="sow_id">Sow id</string>
+    <string name="info">Additional info</string>
+    <string name="button_add_sow">Add sow</string>
+
+    <string name="add_litter">Add new litter</string>
+    <string name="amount">Amount of children</string>
+    <string name="sow_id_2">Id of mother</string>
+    <string name="button_add_litter">Add litter</string>
 
 </resources>
