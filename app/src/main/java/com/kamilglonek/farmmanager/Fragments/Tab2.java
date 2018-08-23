@@ -56,7 +56,7 @@ public class Tab2 extends Fragment {
     MyLitterListAdapter myLitterListAdapter = null;
     MyToDoListAdapter myToDoListAdapter = null;
     ArrayList<ListItem> toDoList = new ArrayList<>();
-    ArrayList<ToDo> toDoTasks = new ArrayList<>();
+    public ArrayList<ToDo> toDoTasks = new ArrayList<>();
 
     public Tab2() {
         // Empty constructor required
@@ -137,13 +137,12 @@ public class Tab2 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
                 View mView = getLayoutInflater().inflate(R.layout.to_do_listview, null);
-                TextView tvTask = (TextView) mView.findViewById(R.id.tvTaskLitter);
-                TextView tvDay = (TextView) mView.findViewById(R.id.tvDayLitter);
                 ListView lvToDoList = (ListView) mView.findViewById(R.id.lvToDoListLitter);
                 myToDoListAdapter = new MyToDoListAdapter();
                 lvToDoList.setAdapter(myToDoListAdapter);
 
                 Litter litter = litters.get(position);
+                toDoTasks.clear();
 
                 for(int i = 0; i < toDoList.size(); i++) {
                     ListItem listItem = toDoList.get(i);
@@ -166,7 +165,8 @@ public class Tab2 extends Fragment {
 
                     //String taskDate = String.format(myFormat, cal.getTime());
                     //String taskDate = cal.getTime().toString();
-                    toDoTasks.add(new ToDo(listItem.taskName, taskDate));
+                    toDoTasks.add(new ToDo(listItem.taskName, taskDate, litter.parentID));
+                    System.out.println(toDoTasks.size());
                 }
                 myToDoListAdapter.notifyDataSetChanged();
                 mBuilder.setView(mView);

@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -100,7 +101,31 @@ public class PersonalList extends AppCompatActivity {
                 });
             }
         });
-
+        personalList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(PersonalList.this);
+                View mView = getLayoutInflater().inflate(R.layout.delete_dialog, null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+                Button bDelete = (Button) mView.findViewById(R.id.bDelete);
+                bDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            list.remove(position);
+                            uploadList();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        listAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
     public void uploadListFirstTime() {

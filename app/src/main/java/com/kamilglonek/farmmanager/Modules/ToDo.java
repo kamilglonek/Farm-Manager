@@ -8,10 +8,12 @@ public class ToDo {
 
     public String taskName;
     public String taskDate;
+    public String parentID;
 
-    public ToDo(String taskName, String taskDate) {
+    public ToDo(String taskName, String taskDate, String parentID) {
 
         this.taskName = taskName;
         this.taskDate = taskDate;
+        this.parentID = parentID;
     }
 }
