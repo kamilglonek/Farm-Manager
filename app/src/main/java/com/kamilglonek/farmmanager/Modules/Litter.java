@@ -1,20 +1,16 @@
 package com.kamilglonek.farmmanager.Modules;
 
-import java.util.Date;
-
 /**
  * Created by kamil on 02/22/18.
  */
 
-public class Litter extends Animal {
+public class Litter {
 
-    public int parentID;
+    public String parentID;
     public int amount;
-    public Date birthdate;
+    public String birthdate;
 
-    public Litter(int animalID, int sowID, Date birthdate, int amount) {
-        super(animalID);
-
+    public Litter(String sowID, String birthdate, int amount) {
         this.parentID = sowID;
         this.amount = amount;
         this.birthdate = birthdate;

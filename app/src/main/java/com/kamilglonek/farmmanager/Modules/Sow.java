@@ -4,12 +4,12 @@ package com.kamilglonek.farmmanager.Modules;
  * Created by kamil on 02/22/18.
  */
 
-public class Sow extends Animal {
+public class Sow {
 
-    public int sowID;
+    public String sowID;
+    public String info;
 
-    public Sow(int animalID, int sowID) {
-        super(animalID);
+    public Sow(String sowID) {
 
         this.sowID = sowID;
     }

@@ -34,4 +34,6 @@
     <string name="sow_id_2">Id of mother</string>
     <string name="button_add_litter">Add litter</string>
 
+    <string name="button_input_birthdate">Choose birthdate</string>
+
 </resources>

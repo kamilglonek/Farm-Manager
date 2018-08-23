@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import com.kamilglonek.farmmanager.R;
@@ -33,7 +34,8 @@ public class Tab4 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
-        TextView message = (TextView) view.findViewById(R.id.tv4);
+        CalendarView calendar = (CalendarView) view.findViewById(R.id.calendarView);
+        calendar.setEnabled(false);
         // Inflate the layout for this fragment
         return view;
     }

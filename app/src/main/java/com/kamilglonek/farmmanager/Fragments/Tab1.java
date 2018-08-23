@@ -1,17 +1,32 @@
 package com.kamilglonek.farmmanager.Fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.kamilglonek.farmmanager.Downloaders.LitterListDownloader;
+import com.kamilglonek.farmmanager.Downloaders.SowListDownloader;
+import com.kamilglonek.farmmanager.Modules.Family;
+import com.kamilglonek.farmmanager.Modules.Litter;
 import com.kamilglonek.farmmanager.Modules.Sow;
 import com.kamilglonek.farmmanager.R;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -29,8 +44,11 @@ public class Tab1 extends Fragment {
     public String title;
     public String tabID;
     ArrayList<Sow> sows = new ArrayList<>();
+    ArrayList<Litter> litters = new ArrayList<>();
     ListView sowList;
-
+    Boolean isSowListCreated = false;
+    MySowListAdapter mySowListAdapter = null;
+    ArrayList<Family> families = new ArrayList<>();
 
     public Tab1() {
         // Empty constructor required
@@ -49,6 +67,58 @@ public class Tab1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SowListDownloader sowListDownloader = new SowListDownloader();
+        String objectID = null;
+        try {
+            ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("sowList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+            objectID = objectIDQuery.getFirst().getObjectId().toString();
+            isSowListCreated = true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(objectID != null) {
+            try {
+                sows = sowListDownloader.loadSowList(objectID);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        ///// finding litters that belong to sows
+
+        LitterListDownloader litterListDownloader = new LitterListDownloader();
+        String objectID_2 = null;
+        try {
+            ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("litterList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+            objectID_2 = objectIDQuery.getFirst().getObjectId().toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(objectID_2 != null) {
+            try {
+                litters = litterListDownloader.loadLitterList(objectID_2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < sows.size(); i++) {
+            Family family = new Family(sows.get(i));
+            for (int j = 0; j < litters.size(); j++) {
+                if (litters.get(j).parentID.equals(sows.get(i).sowID)){
+                    family.litters.add(litters.get(j));
+                }
+            }
+
+            //add family to array list
+            families.add(family);
+        }
     }
 
     @Override
@@ -57,6 +127,7 @@ public class Tab1 extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
         sowList = (ListView) view.findViewById(R.id.sowList);
+
 
         // Inflate the layout for this fragment
         return view;
@@ -68,104 +139,46 @@ public class Tab1 extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        sows.add(new Sow(1,1));
-        sows.add(new Sow(2,2));
-
-        MySowListAdapter mySowListAdapter = new MySowListAdapter();
+        mySowListAdapter = new MySowListAdapter();
         sowList.setAdapter(mySowListAdapter);
+
+        sowList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mView = getLayoutInflater().inflate(R.layout.delete_dialog, null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+                Button bDelete = (Button) mView.findViewById(R.id.bDelete);
+                bDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            uploadSowList(null, null, true, position);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        mySowListAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                return true;
+            }
+        });
     }
 
 
-//    // TODO: Rename parameter arguments, choose names that match
-//    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
-//
-//    private String title;
-//    private int tabID;
-//
-//    // TODO: Rename and change types of parameters
-//    private String mParam1;
-//    private String mParam2;
-//
-//    private OnFragmentInteractionListener mListener;
-//
-//    public Tab1() {
-//        // Required empty public constructor
-//    }
-//
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param title Parameter 1.
-//     * @param tabID Parameter 2.
-//     * @return A new instance of fragment Tab1.
-//     */
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        View view =  inflater.inflate(R.layout.fragment_tab1, container, false);
-//        TextView tvLabel = (TextView) view.findViewById(R.id.tv1);
-//        tvLabel.setText(title + " " + tabID);
-//        return view;
-//    }
-//
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-//
-//    /**
-//     * This interface must be implemented by activities that contain this
-//     * fragment to allow an interaction in this fragment to be communicated
-//     * to the activity and potentially other fragments contained in that
-//     * activity.
-//     * <p>
-//     * See the Android Training lesson <a href=
-//     * "http://developer.android.com/training/basics/fragments/communicating.html"
-//     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
+    }
 
     class MySowListAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return sows.size();
+            return families.size();
         }
 
         @Override
@@ -185,9 +198,59 @@ public class Tab1 extends Fragment {
             TextView sowID = (TextView) convertView.findViewById(R.id.tvAnimalID);
 
 
-            animalID.setText("Mother Nr: "+sows.get(position).sowID);
-            sowID.setText("Animal ID: "+sows.get(position).animalID);
+            animalID.setText("Mother Nr: "+families.get(position).sow.sowID.toString());
+            sowID.setText("Litters: "+families.get(position).litters.size());
             return convertView;
         }
+    }
+
+    public void checkoutList(){
+        isSowListCreated = false;
+
+        String objectIDTest = null;
+        try {
+            ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("sowList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+            objectIDTest = objectIDQuery.getFirst().getObjectId().toString();
+            isSowListCreated = true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void uploadSowList(String sowID, String info, boolean ifDelete, int position) throws ParseException {
+
+        if (sowID != null) {
+            sows.add(new Sow(sowID));
+        }
+
+        if (ifDelete) {
+            sows.remove(position);
+        }
+
+        checkoutList();
+
+        if(!isSowListCreated) {
+            // create sowList for the first time
+            ParseObject parseObjcet = new ParseObject("sowList");
+            parseObjcet.put("owner", ParseUser.getCurrentUser().getUsername().toString());
+            Gson gson = new Gson();
+            String json = gson.toJson(sows);
+            parseObjcet.put("sows", json);
+            parseObjcet.saveInBackground();
+            //System.out.println("=-=------------------1-1-1-");
+        }
+        else {
+            //update already existing list
+            String objectID;
+            ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("sowList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
+            objectID = objectIDQuery.getFirst().getObjectId().toString();
+            ParseObject parseObject = objectIDQuery.get(objectID);
+            Gson gson = new Gson();
+            String json = gson.toJson(sows);
+            parseObject.put("sows", json);
+            parseObject.saveInBackground();
+        }
+        mySowListAdapter.notifyDataSetChanged();
     }
 }

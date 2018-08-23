@@ -5,10 +5,10 @@
     tools:context="com.kamilglonek.farmmanager.Fragments.Tab4">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tv4"
+
+    <CalendarView
+        android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="4" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

@@ -6,36 +6,24 @@
     tools:context=".Activities.PersonalList">
 
     <TextView
-        android:id="@+id/tvSowID_2"
+        android:id="@+id/tvTaskLitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:text="TextView"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"/>
-
-    <TextView
-        android:id="@+id/tvAnimalAmount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvSowID_2"
-        android:layout_below="@+id/tvSowID_2"
-        android:text="TextView"
-        android:layout_marginLeft="15dp"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"/>
 
     <TextView
-        android:id="@+id/tvBirthdate"
+        android:id="@+id/tvDayLitter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvAnimalAmount"
-        android:layout_below="@+id/tvAnimalAmount"
-        android:text="TextView"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="2dp"/>
+        android:layout_alignBaseline="@+id/tvTaskLitter"
+        android:layout_alignBottom="@+id/tvTaskLitter"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/tvTaskLitter"
+        android:text="TextView" />
 
 </RelativeLayout>

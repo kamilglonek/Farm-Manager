@@ -16,13 +16,14 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/etSowID"
+        android:id="@+id/etParentID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:hint="@string/sow_id"
+        android:hint="@string/sow_id_2"
         android:inputType="text" />
+
 
     <EditText
         android:id="@+id/etAmount"
@@ -31,6 +32,15 @@
         android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="@string/amount"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/etInputBirthdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="@string/button_input_birthdate"
         android:inputType="text" />
 
     <Button

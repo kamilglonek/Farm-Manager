@@ -38,7 +38,7 @@ public class PersonalListDownloader {
                 e.printStackTrace();
             }
             try {
-                list.add(new ListItem(obj.get("dayNumber").toString(), obj.get("taskName").toString()));
+                list.add(new ListItem(obj.get("taskName").toString(), obj.get("dayNumber").toString()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

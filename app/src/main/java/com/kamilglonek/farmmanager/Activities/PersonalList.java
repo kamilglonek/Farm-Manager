@@ -21,9 +21,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -32,7 +30,8 @@ public class PersonalList extends AppCompatActivity {
     ListView personalList;
     FloatingActionButton addTaskButton;
     Button bAddTask;
-    ArrayList<ListItem> list = new ArrayList<>();
+    public ArrayList<ListItem> list = new ArrayList<>();
+    Boolean isListCreated = false;
 
 
     @Override
@@ -45,7 +44,6 @@ public class PersonalList extends AppCompatActivity {
         ///// PersonalListDownloader
         PersonalListDownloader personalListDownloader = new PersonalListDownloader();
         String objectID = null;
-        Boolean isListCreated = false;
         try {
             ParseQuery<ParseObject> objectIDQuery = ParseQuery.getQuery("personalList").whereMatches("owner", ParseUser.getCurrentUser().getUsername().toString());
             objectID = objectIDQuery.getFirst().getObjectId().toString();
@@ -54,9 +52,7 @@ public class PersonalList extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (objectID == null){
-
-        } else {
+        if (objectID != null){
             try {
                 list = personalListDownloader.loadList(objectID);
             } catch (JSONException e) {
@@ -68,7 +64,6 @@ public class PersonalList extends AppCompatActivity {
 
         // adding task to list with add task dialog
         addTaskButton = (FloatingActionButton) findViewById(R.id.addTaskButton);
-        Boolean finalIsListCreated = isListCreated;
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,8 +83,9 @@ public class PersonalList extends AppCompatActivity {
                             ListItem newListItem = new ListItem(etTaskName.getText().toString(), etDayNumber.getText().toString());
                             list.add(newListItem);
                             listAdapter.notifyDataSetChanged();
-                            if(!finalIsListCreated){
+                            if(!isListCreated){
                                 uploadListFirstTime();
+                                isListCreated = true;
                             }
                             else {
                                 try {
@@ -98,10 +94,6 @@ public class PersonalList extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-
-//                            jList.put(newListItem);
-//                            pObject.put("jList", jList);
-//                            pObject.saveInBackground();
                         }
                         dialog.dismiss();
                     }
@@ -109,18 +101,6 @@ public class PersonalList extends AppCompatActivity {
             }
         });
 
-    }
-
-    public ArrayList<ListItem> loadList() throws ParseException, JSONException {
-        ParseQuery personalList = new ParseQuery("personalList");
-        ParseObject object = personalList.get("EWUDvPLj2R");
-        String jsonList = object.get("list").toString();
-        JSONArray array = new JSONArray(jsonList);
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            list.add(new ListItem(obj.get("dayNumber").toString(), obj.get("taskName").toString()));
-        }
-        return list;
     }
 
     public void uploadListFirstTime() {
@@ -143,23 +123,6 @@ public class PersonalList extends AppCompatActivity {
         parseObject.saveInBackground();
 
     }
-
-    public void addListItem() {
-//        ParseObject parsePersonalList = new ParseObject("Personal list");
-//        Gson gson = new Gson();
-//        JSONObject
-//        parsePersonalList.put("", farm);
-//        parseFarm.saveInBackground();
-    }
-
-//    public ParseObject createListItem (String name, String dayNumber) {
-//
-//        ParseObject listItem = new ParseObject("ListItem");
-//        listItem.put("name", name);
-//        listItem.put("dayNumber", dayNumber);
-//
-//        return listItem;
-//    }
 
     class MyListAdapter extends BaseAdapter {
 
@@ -184,8 +147,8 @@ public class PersonalList extends AppCompatActivity {
             TextView task = (TextView) convertView.findViewById(R.id.tvTask);
             TextView dayNumber = (TextView) convertView.findViewById(R.id.tvDay);
 
-            task.setText(list.get(position).taskName);
-            dayNumber.setText(list.get(position).dayNumber);
+            task.setText("Task: " + list.get(position).taskName.toString());
+            dayNumber.setText("Day: "+list.get(position).dayNumber.toString());
             return convertView;
         }
     }
