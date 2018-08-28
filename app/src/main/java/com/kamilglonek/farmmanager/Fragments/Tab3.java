@@ -199,14 +199,15 @@ public class Tab3 extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             convertView = getLayoutInflater().inflate(R.layout.to_do, null);
             TextView tvDateToDo = (TextView) convertView.findViewById(R.id.tvDateToDo);
+            TextView tvDaysLeft = (TextView) convertView.findViewById(R.id.tvDaysLeft);
             TextView tvTaskToDo = (TextView) convertView.findViewById(R.id.tvTaskToDo);
             TextView tvLitterToDo = (TextView) convertView.findViewById(R.id.tvLitterToDo);
 
-
-            tvDateToDo.setText(tasksCalculated.get(position).toDo.taskDate);
-            tvTaskToDo.setText(tasksCalculated.get(position).toDo.taskName);
             String daysLeft = Integer.toString(tasksCalculated.get(position).daysLeft);
-            tvLitterToDo.setText(daysLeft);
+            tvDateToDo.setText(tasksCalculated.get(position).toDo.taskDate);
+            tvDaysLeft.setText(daysLeft);
+            tvTaskToDo.setText(tasksCalculated.get(position).toDo.taskName);
+            tvLitterToDo.setText(tasksCalculated.get(position).toDo.parentID);
             return convertView;
         }
     }

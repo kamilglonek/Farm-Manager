@@ -45,13 +45,7 @@
                     android:id="@+id/tabItem4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_callendar" />
-
-                <android.support.design.widget.TabItem
-                    android:id="@+id/tabItem5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_recepies" />
+                    android:text="@string/title_recipes" />
 
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>

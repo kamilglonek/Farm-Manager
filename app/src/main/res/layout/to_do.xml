@@ -15,11 +15,21 @@
         android:text="TextView" />
 
     <TextView
+        android:id="@+id/tvDaysLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="38dp"
+        android:layout_toEndOf="@+id/tvDateToDo"
+        android:text="TextView" />
+
+    <TextView
         android:id="@+id/tvTaskToDo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="110dp"
+        android:layout_toEndOf="@+id/tvDaysLeft"
         android:text="TextView" />
 
     <TextView
@@ -29,6 +39,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
         android:text="TextView" />
 
 </RelativeLayout>

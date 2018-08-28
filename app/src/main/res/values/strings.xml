@@ -16,8 +16,7 @@
     <string name="title_sow">Sow</string>
     <string name="title_litter">Litter</string>
     <string name="title_to_do">To do</string>
-    <string name="title_callendar">Callendar</string>
-    <string name="title_recepies">Recepies</string>
+    <string name="title_recipes">Recipes</string>
 
     <string name="add_task">Add new task to list</string>
     <string name="task_name">Task name</string>

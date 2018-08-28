@@ -28,7 +28,6 @@ import com.kamilglonek.farmmanager.Fragments.Tab1;
 import com.kamilglonek.farmmanager.Fragments.Tab2;
 import com.kamilglonek.farmmanager.Fragments.Tab3;
 import com.kamilglonek.farmmanager.Fragments.Tab4;
-import com.kamilglonek.farmmanager.Fragments.Tab5;
 import com.kamilglonek.farmmanager.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -316,12 +315,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     public static class MyPagerAdapter extends FragmentPagerAdapter {
 
-        private static int TAB_ITEMS = 5;
+        private static int TAB_ITEMS = 4;
         private static String TAB_1_TITLE = "Sow";
         private static String TAB_2_TITLE = "Litter";
         private static String TAB_3_TITLE = "To do";
-        private static String TAB_4_TITLE = "Callednar";
-        private static String TAB_5_TITLE = "Recepies";
+        private static String TAB_4_TITLE = "Recipes";
 
         public MyPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
@@ -341,10 +339,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     fragment = Tab3.newInstance("To do", "3");
                     break;
                 case 3:
-                    fragment = Tab4.newInstance("Callendar", "4");
-                    break;
-                case 4:
-                    fragment = Tab5.newInstance("Recepies", "5");
+                    fragment = Tab4.newInstance("Recipes", "4");
                     break;
                 default:
                     return null;
